@@ -897,8 +897,9 @@ class GUIModel:
 
 if __name__ == '__main__':
     
-    components = [PointSource(z=0.0, semi_angle=0.1),
-                    Biprism(z=0.5, defx=-0.1),
+    biprism_def = -0.01
+    components = [PointSource(z=0.0, semi_angle=0.01),
+                    Biprism(z=0.5, defx=biprism_def),
                     Detector(
                         z=1.,
                         pixel_size=0.05,
@@ -952,7 +953,9 @@ if __name__ == '__main__':
     opl_detector = opls[-1, :]
     phase_detector = k * opl_detector
 
-    image_x_pos, image = get_interference(xvals[-1, :], phase_detector, 128, [-0.06, 0.06])
+    s = wavelength/biprism_def
+    print('Spacing=', s)
+    image_x_pos, image = get_interference(xvals[-1, :], phase_detector, 1024, [-0.001, 0.01])
                                           
     plt.figure()
     plt.plot(image_x_pos, np.abs(image)**2/np.max(np.abs(image)**2))
